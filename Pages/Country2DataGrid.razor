@@ -1,0 +1,87 @@
+﻿@page "/Country2DataGrid"
+@using SyncfusionBlazorApp1.Models;
+@using Syncfusion.Blazor.Data;
+@using Syncfusion.Blazor;
+@using System.Collections;
+@using Syncfusion.Blazor.Grids;
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class='e-mastertext'><b>Master Grid</b></div>
+
+            <SfGrid SelectedRowIndex=1 @ref="@CountryGrid" TValue="Country" Height="315" Toolbar="@(new List<string>() { "Search", "Add", "Edit","Update","Delete","Cancel" , "ExcelExport" })" >
+            <SfDataManager Url="/api/Country2DataGrid" InsertUrl="/api/Country2DataGrid/Insert" UpdateUrl="/api/Country2DataGrid/UpdateCountry" RemoveUrl="/api/Country2DataGrid/DeleteCountry" Adaptor="Adaptors.UrlAdaptor" ></SfDataManager>
+            <GridPageSettings PageSize="7"></GridPageSettings>
+            
+            <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Normal"></GridEditSettings>
+           
+                
+            <GridEvents RowSelected="RowSelecthandler" TValue="Country"></GridEvents>
+
+	
+
+             <GridColumns>
+                <GridColumn Field="CountryId"  HeaderText="CountryId" IsPrimaryKey="true" IsIdentity="true"></GridColumn>
+	            <GridColumn Field="CountryName"  HeaderText="CountryName" Type="ColumnType.String"></GridColumn>
+	            <GridColumn Field="Campus"  HeaderText="Campus"></GridColumn>
+	            <GridColumn Field="Faculty"  HeaderText="Faculty"></GridColumn>
+	            <GridColumn Field="State"  HeaderText="State"></GridColumn>
+	            <GridColumn Field="Student"  HeaderText="Student"></GridColumn>
+	            <GridColumn Field="University"  HeaderText="University"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+
+            <div> class='e-statustext'>Showing States of Country: <b>@SelectedCountry</b> 
+                
+            </div>
+
+            <SfGrid @ref="@StateGrid" TValue="State" Query="@(new Query().Where("CountryID", "equal", RowIndex))" Height="315" AllowSorting="true" AllowGrouping="true" AllowPaging="true" Toolbar="@(new List<string>() { "Search", "Add", "Edit","Update","Delete","Cancel" , "ExcelExport" ,"PdfExport"})" AllowFiltering="true" AllowSelection="true" AllowExcelExport="true" AllowPdfExport="true">
+            <SfDataManager Url="/api/StateDataGrid" InsertUrl="/api/StateDataGrid/Insert" UpdateUrl="/api/StateDataGrid/UpdateState" RemoveUrl="/api/StateDataGrid/DeleteState" Adaptor="Adaptors.UrlAdaptor" ></SfDataManager>
+            <GridPageSettings PageSize="7"></GridPageSettings>
+            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+	        <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="Syncfusion.Blazor.Grids.EditMode.Normal"></GridEditSettings>
+           
+            
+            <GridColumns>
+    <GridColumn Field="StateId"  HeaderText="StateId" IsPrimaryKey="true" IsIdentity="true"></GridColumn>
+	<GridColumn Field="CountryId"  HeaderText="CountryId" Type="ColumnType.Number"></GridColumn>
+	<GridColumn Field="StateName"  HeaderText="StateName" Type="ColumnType.String"></GridColumn>
+	<GridColumn Field="Campus"  HeaderText="Campus"></GridColumn>
+	<GridColumn Field="City"  HeaderText="City"></GridColumn>
+	<GridColumn Field="Country"  HeaderText="Country"></GridColumn>
+	<GridColumn Field="Faculty"  HeaderText="Faculty"></GridColumn>
+	<GridColumn Field="Student"  HeaderText="Student"></GridColumn>
+	<GridColumn Field="University"  HeaderText="University"></GridColumn>
+    </GridColumns>
+            
+            </SfGrid>
+
+        </div>
+    </div>
+</div>
+
+@code{
+
+    
+    public string SelectedCountry { get; set; }
+
+
+
+    public int? RowIndex { get; set; } = 2;
+    public void RowSelecthandler(RowSelectEventArgs<Country> Args)
+    {
+        SelectedCountry = Args.Data.CountryName;
+        RowIndex = Args.Data.CountryId;
+    }
+
+    SfGrid<Country>?  CountryGrid { get; set; }
+    SfGrid<State>? StateGrid { get; set; }
+
+    
+    
+}
+ 
+
+
+

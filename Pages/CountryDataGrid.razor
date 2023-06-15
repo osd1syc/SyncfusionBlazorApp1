@@ -1,0 +1,43 @@
+﻿@page "/CountryDataGrid"
+@using SyncfusionBlazorApp1.Models;
+@using Syncfusion.Blazor.Data;
+@using Syncfusion.Blazor;
+@using System.Collections;
+@using Syncfusion.Blazor.Grids;
+
+<SfGrid ID="Grid" @ref="@Grid" TValue="Country" Height="315" AllowSorting="true" AllowPaging="true"  Toolbar="@(new List<string>() { "Search", "Add", "Edit","Update","Delete","Cancel" , "ExcelExport" ,"PdfExport"})" AllowFiltering="true" AllowSelection="true" AllowExcelExport="true" AllowPdfExport="true">
+  <SfDataManager Url="/api/CountryDataGrid" InsertUrl="/api/CountryDataGrid/Insert" UpdateUrl="/api/CountryDataGrid/UpdateCountry" RemoveUrl="/api/CountryDataGrid/DeleteCountry" Adaptor="Adaptors.UrlAdaptor" ></SfDataManager>
+   <GridPageSettings PageSize="7"></GridPageSettings>
+<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+<GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="Syncfusion.Blazor.Grids.EditMode.Dialog"></GridEditSettings>
+<GridEvents OnToolbarClick="ToolbarClick" TValue="Country"></GridEvents>
+    <GridColumns>
+    <GridColumn Field="CountryId"  HeaderText="CountryId" IsPrimaryKey="true" IsIdentity="true"></GridColumn>
+	<GridColumn Field="CountryName"  HeaderText="CountryName" Type="ColumnType.String"></GridColumn>
+	<GridColumn Field="Campus"  HeaderText="Campus"></GridColumn>
+	<GridColumn Field="Faculty"  HeaderText="Faculty"></GridColumn>
+	<GridColumn Field="State"  HeaderText="State"></GridColumn>
+	<GridColumn Field="Student"  HeaderText="Student"></GridColumn>
+	<GridColumn Field="University"  HeaderText="University"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+  SfGrid<Country>?  Grid { get; set; }
+   
+  public async Task ToolbarClick(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+{
+  if (args.Item.Id == "Grid_pdfexport")
+  {
+  await this.Grid!.ExportToPdfAsync();
+  }
+  if (args.Item.Id =="Grid_excelexport")
+  {
+   await this.Grid!.ExportToExcelAsync();
+  }
+}
+}
+ 
+
+
+

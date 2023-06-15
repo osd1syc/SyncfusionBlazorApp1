@@ -1,0 +1,45 @@
+﻿@page "/StateDataGrid"
+@using SyncfusionBlazorApp1.Models;
+@using Syncfusion.Blazor.Data;
+@using Syncfusion.Blazor;
+@using System.Collections;
+@using Syncfusion.Blazor.Grids;
+
+<SfGrid ID="Grid" @ref="@Grid" TValue="State" Height="315" AllowSorting="true" AllowGrouping="true" AllowPaging="true"  Toolbar="@(new List<string>() { "Search", "Add", "Edit","Update","Delete","Cancel" , "ExcelExport" ,"PdfExport"})" AllowFiltering="true" AllowSelection="true" AllowExcelExport="true" AllowPdfExport="true">
+  <SfDataManager Url="/api/StateDataGrid" InsertUrl="/api/StateDataGrid/Insert" UpdateUrl="/api/StateDataGrid/UpdateState" RemoveUrl="/api/StateDataGrid/DeleteState" Adaptor="Adaptors.UrlAdaptor" ></SfDataManager>
+   <GridPageSettings PageSize="7"></GridPageSettings>
+<GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+	<GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="Syncfusion.Blazor.Grids.EditMode.Normal"></GridEditSettings>
+<GridEvents OnToolbarClick="ToolbarClick" TValue="State"></GridEvents>
+    <GridColumns>
+    <GridColumn Field="StateId"  HeaderText="StateId" IsPrimaryKey="true" IsIdentity="true"></GridColumn>
+	<GridColumn Field="CountryId"  HeaderText="CountryId" Type="ColumnType.Number"></GridColumn>
+	<GridColumn Field="StateName"  HeaderText="StateName" Type="ColumnType.String"></GridColumn>
+	<GridColumn Field="Campus"  HeaderText="Campus"></GridColumn>
+	<GridColumn Field="City"  HeaderText="City"></GridColumn>
+	<GridColumn Field="Country"  HeaderText="Country"></GridColumn>
+	<GridColumn Field="Faculty"  HeaderText="Faculty"></GridColumn>
+	<GridColumn Field="Student"  HeaderText="Student"></GridColumn>
+	<GridColumn Field="University"  HeaderText="University"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+  SfGrid<State>?  Grid { get; set; }
+   
+  public async Task ToolbarClick(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+{
+  if (args.Item.Id == "Grid_pdfexport")
+  {
+  await this.Grid!.ExportToPdfAsync();
+  }
+  if (args.Item.Id =="Grid_excelexport")
+  {
+   await this.Grid!.ExportToExcelAsync();
+  }
+}
+}
+ 
+
+
+
